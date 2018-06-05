@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8' />
+        <title>Flying Tigers Demo</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style>
+            body {
+                margin-top:2%;
+                text-align:center;
+                color:#fff;
+                background-color:#122836;
+            }
+            #server {
+                display:block;
+                margin:0% auto 2%;
+            }
+            #start {
+                display:block;
+                margin:0% auto 2%;
+            }
+            video { 
+                position:absolute;
+                visibility:hidden;
+            }
+            canvas { border:8px solid #fff;}
+            button {
+                border:none;
+                display:block;
+                padding:0.5em 1em;
+                margin:1% auto 0;
+                cursor:pointer;
+                color:#fff;
+                background-color:#9f361b;
+            }
+            button:active { background-color:#e44d26; }
+        </style>
+        <script async src="cv.js"></script>
+        <script src='face-detection.js'></script>
+        <script src='signalling.js'></script>
+        <script src='main.js'></script>
+        <script type='text/javascript'>
+            var Module = {
+                preRun: [],
+                postRun: [],
+                print: (function () {
+                    return function (text) {
+                        text = Array.prototype.slice.call(arguments).join(' ');
+                        console.log(text);
+                    };
+                })(),
+                printErr: function (text) {
+                    text = Array.prototype.slice.call(arguments).join(' ');
+                    console.error(text);
+                }
+            };
+        </script>
+
+    </head>
+    <body>
+	<p>PI1 camera IP: <input required type="text" id="address_1" value="" title="hostname (or IP address) and port of the UV4L WebRTC Web Service"/></label></p>
+	<p>PI2 camera IP: <input required type="text" id="address_2" value="" title="hostname (or IP address) and port of the UV4L WebRTC Web Service"/></label></p>
+        <button id='start'>Start Streaming</button>
+        <video id='v'></video>	
+        <canvas id='c'></canvas>
+        <script>
+            // Let's get a default address for the signalling server
+            var address_1 = document.getElementById('address_1').value;
+            if (!address_1 || address_1 === '') {
+                var hostname_1 = location.hostname;
+                if (hostname_1) {
+                    address_1 = hostname_1 + ':' + (location.port || (location.protocol === 'https:' ? 443 : 80)) + '/webrtc';
+                    document.getElementById('address_1').value = address_1;
+                } else {
+                    document.getElementById('address_1').value = "<host>:<port>/webrtc";
+                }
+            }
+
+	    var address_2 = document.getElementById('address_2').value;
+            if (!address_2 || address_2 === '') {
+                var hostname_2 = location.hostname;
+                if (hostname_2) {
+                    address_2 = hostname_2 + ':' + (location.port || (location.protocol === 'https:' ? 443 : 80)) + '/webrtc';
+                    document.getElementById('address_2').value = address_2;
+                } else {
+                    document.getElementById('address_2').value = "<host>:<port>/webrtc";
+                }
+            }
+
+        </script>
+    </body>
+</html>
+
